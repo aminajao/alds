@@ -35,15 +35,49 @@ package com.alds.windowSliding;
  */
 public class MaximumConsecutiveSubsetSumInArray {
     
-    public void calculate(int[] input, int k) {
-        
+    public static int calculateB(int[] input, int k) {      
        if(input.length == 0 || k > input.length) {
-           return;
+           return 0;
        }
 
+       int maxSum = 0;
        for(int i=0; i<input.length; i++) {
-           
-       }
+    	   int sum = 0;
+           for(int j=0; j<k; j++) {
+        	   if(i+j < input.length) {
+        		   sum = sum + input[i+j];
+        	   }
+           }
+           if(sum > maxSum) {
+    		   maxSum = sum;
+    	   }
+       }  
+       return maxSum;
+    }
+    
+    /* O(k+n) complexity - window sliding technique */
+    public static int calculateE(int[] input, int k) {
+    	if(input.length == 0 || k > input.length) {
+            return 0;
+        }
+    	
+    	int startSum = 0;
+    	for(int i=0; i<k; i++) {
+    		startSum += input[i];
+    	}
+    	
+    	int maxSum =0;
+    	for(int i=k; i<input.length; i++) {
+    		startSum += input[i] - input[i-k];
+    		maxSum = Math.max(startSum, maxSum);
+    	}
+    	
+    	return maxSum;
+    }
+    
+    public static void main(String[] args) {
+    	int[] test = {1, 4, 2, 10, 23, 3, 1, 0, 20};
+    	System.out.println("Result : "+calculateE(test, 4));
     }
 
 }
