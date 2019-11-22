@@ -44,6 +44,7 @@ public class TripletsWithZeroSum {
     public static void findE(int[] arr) {
         int n = arr.length;  
         for(int i=0; i<n-1; i++) {    
+            // we will find all pairs with -arr[i]  
             Map<Integer, Integer> data = new HashMap<>();
             for(int j=i+1; j<n; j++) {
                 int x = -(arr[i] + arr[j]);
@@ -51,6 +52,7 @@ public class TripletsWithZeroSum {
                 if(data.containsKey(x)) {
                     System.out.println("Triplet : {" + x + "," + arr[i] + "," + arr[j] + "}");
                 } else {
+                    // put that element which pair to get 0
                     data.put(arr[j], arr[j]);
                 }
             }
@@ -58,7 +60,7 @@ public class TripletsWithZeroSum {
     }
 
     public static void main(String[] args) {
-        int[] test = {1, -2, 1, 0, 5};
+        int[] test = {0, -1, 2, -3, 1};
         findE(test);
     }
 
