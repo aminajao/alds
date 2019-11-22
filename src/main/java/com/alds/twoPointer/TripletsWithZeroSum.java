@@ -11,7 +11,6 @@
 package com.alds.twoPointer;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 
@@ -48,6 +47,7 @@ public class TripletsWithZeroSum {
             Map<Integer, Integer> data = new HashMap<>();
             for(int j=i+1; j<n; j++) {
                 int x = -(arr[i] + arr[j]);
+                //  sum should to equal to element in an array, we are checking if any summed up element is there
                 if(data.containsKey(x)) {
                     System.out.println("Triplet : {" + x + "," + arr[i] + "," + arr[j] + "}");
                 } else {
