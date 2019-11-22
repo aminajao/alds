@@ -1,8 +1,4 @@
-/**
- * 
- */
-package com.alds.others;
-
+package com.alds.hashing;
 import java.util.HashMap;
 import java.util.Map;
 
