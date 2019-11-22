@@ -8,7 +8,7 @@
 *       Filename: $Id:  $
 *       Revision: $Revision: $
 */
-package com.alds.twoPointer;
+package com.alds.hashing;
 
 import java.util.HashMap;
 import java.util.Map;
