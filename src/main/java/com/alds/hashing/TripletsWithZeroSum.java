@@ -10,8 +10,14 @@
 */
 package com.alds.hashing;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -58,10 +64,34 @@ public class TripletsWithZeroSum {
             }
         } 
     }
+    
+
+    public static List<List<Integer>> threeSum(int[] nums) {       
+        int n = nums.length;       
+        Set<List<Integer>> res = new HashSet<>();
+        
+        for(int i=0; i<n; i++) {
+            Map<Integer, Integer> data = new HashMap<>(); 
+            for(int j=i+1; j<n; j++) {
+                int x = -(nums[i] + nums[j]);
+                if(data.containsKey(x)) {
+                    List<Integer> mid = new ArrayList<>();
+                    mid.add(x);
+                    mid.add(nums[i]);
+                    mid.add(nums[j]); 
+                    Collections.sort(mid);
+                    res.add(mid);
+                } else {
+                    data.put(nums[j], nums[j]);
+                }
+            }
+        }
+        return new ArrayList<>(res);
+    }
 
     public static void main(String[] args) {
-        int[] test = {0, -1, 2, -3, 1};
-        findE(test);
+        int[] test = {-1,0,1,2,-1,-4};
+        System.out.println(Arrays.toString(threeSum(test).toArray()));
     }
 
 }
