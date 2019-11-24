@@ -13,7 +13,7 @@ package com.alds.windowSliding;
 /**
  * @author rohsingh
  * 
- *  Find the longest substring with K distinct characters 
+ *  Find the longest substring with K unique characters 
    
    "aabbcc", k = 1
     Max substring can be any one from {"aa" , "bb" , "cc"}.
@@ -30,6 +30,20 @@ package com.alds.windowSliding;
 public class LongestSubstringWithDistinctChars {
 	
 	public String findB(String str, int k) {
+	
+		int n = str.length();
+		String res;
+		
+		int i = 1;
+		String start = str.substring(k-1);
+		
+		while(i < n) {
+			res = str.substring(i);
+			i++;
+		}
+			
+			
+			
 		return str;
 	
 	}
