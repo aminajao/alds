@@ -42,8 +42,7 @@ public class Palindrome {
         if (n == 0) {
             return t;
         }
-        t = t * 10 + n % 10;
-        return reverseNumber(n / 10, t);
+        return reverseNumber(n / 10, t * 10 + n % 10);
     }
 
     public static String reverseString(String s) {
