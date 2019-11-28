@@ -10,6 +10,8 @@
 */
 package com.alds.others;
 
+import org.omg.CORBA.Current;
+
 import sun.awt.DisplayChangedListener;
 
 /**
@@ -31,14 +33,30 @@ public class RemoveFromCircularLinkedList {
             this.val = val;
             this.next = next;
         }
-        
-        public Node copy(Node n) {
-            Node t = new Node(n.val);
-            return t;
+    }
+
+    public Node copy(Node n) {
+        Node curent = n;
+        // pointers
+        Node head = null;
+        Node tail = null;
+
+        while (curent.val != n.val) {
+            if (head == null) {
+                head = new Node(n.val);
+                tail = head;
+            } else {
+                tail.next = new Node(n.next.val);
+                tail = tail.next;
+                tail.next = null;
+            }
+            curent = curent.next;
         }
+        return head;
     }
 
     Node head = null;
+    
     Node tail = null;
 
     public void create(int data) {
@@ -68,13 +86,13 @@ public class RemoveFromCircularLinkedList {
             System.out.println("Nodes of the circular linked list: ");
             do {
                 // Prints each node by incrementing pointer.
-                System.out.print(" " + current.val);
+                System.out.print("->" + current.val);
                 current = current.next;
             } while (current != head);
             System.out.println();
         }
     }
-    
+
     public int length(Node head) {
         // get the length first
         int n = 1;
@@ -90,11 +108,8 @@ public class RemoveFromCircularLinkedList {
         if (head != null) {
  
             int n = 1;
-            Node current = null;
+            Node current = copy(head);
             while (head.next != head) {
-                current = new Node(head.val);
-                current.next = head.next;
-                head = head.next;
                 head.next = head.next.next;
                 n++;
             }
@@ -114,18 +129,18 @@ public class RemoveFromCircularLinkedList {
             }
         }
     }
-    
+
     public static void main(String[] args) {
         RemoveFromCircularLinkedList r = new RemoveFromCircularLinkedList();
         r.create(1);
         r.create(2);
         r.create(3);
         r.create(4);
-        
+
         r.display();
-        
+
         r.delete(1);
-        
+
         r.display();
     }
 }
