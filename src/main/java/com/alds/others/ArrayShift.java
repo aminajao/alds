@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.alds.others;
 
 import java.util.Arrays;

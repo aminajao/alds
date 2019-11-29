@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.alds.sorting;
 
 import java.util.Arrays;

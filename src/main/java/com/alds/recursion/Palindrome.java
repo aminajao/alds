@@ -1,10 +1,7 @@
-/**
- * 
- */
 package com.alds.recursion;
 
 /**
- * @author rohsi
+ * @author rohsingh
  *
  */
 public class Palindrome {

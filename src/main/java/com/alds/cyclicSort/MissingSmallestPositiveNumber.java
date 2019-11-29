@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.alds.cyclicSort;
 
 import java.util.HashSet;
