@@ -10,15 +10,15 @@
 */
 package com.alds.others;
 
-import org.omg.CORBA.Current;
-
-import sun.awt.DisplayChangedListener;
-
 /**
  * @author rohsingh
  *
  */
-public class RemoveFromCircularLinkedList {
+public class CircularLinkedList {
+
+    Node head = null;
+
+    Node tail = null;
 
     class Node {
         public int val;
@@ -36,30 +36,22 @@ public class RemoveFromCircularLinkedList {
     }
 
     public Node copy(Node n) {
-        Node curent = n;
-        // pointers
-        Node head = null;
-        Node tail = null;
+        Node h = new Node(n.val);
+        Node t = h;
+        t.next = h;
 
-        while (curent.val != n.val) {
-            if (head == null) {
-                head = new Node(n.val);
-                tail = head;
-            } else {
-                tail.next = new Node(n.next.val);
-                tail = tail.next;
-                tail.next = null;
-            }
-            curent = curent.next;
-        }
-        return head;
+        do {
+            t.next = new Node(n.next.val);
+            t = t.next;
+            t.next = h;
+
+            n = n.next;
+        } while (t.next.val != n.val);
+
+        return h;
     }
 
-    Node head = null;
-    
-    Node tail = null;
-
-    public void create(int data) {
+    public void add(int data) {
         // Create new node
         Node newNode = new Node(data);
         // Checks if the list is empty.
@@ -78,9 +70,9 @@ public class RemoveFromCircularLinkedList {
         }
     }
 
-    public void display() {
-        Node current = head;
-        if (head == null) {
+    public void display(Node node) {
+        Node current = node;
+        if (node == null) {
             System.out.println("List is empty");
         } else {
             System.out.println("Nodes of the circular linked list: ");
@@ -88,25 +80,14 @@ public class RemoveFromCircularLinkedList {
                 // Prints each node by incrementing pointer.
                 System.out.print("->" + current.val);
                 current = current.next;
-            } while (current != head);
+            } while (current.val != node.val);
             System.out.println();
         }
     }
 
-    public int length(Node head) {
-        // get the length first
-        int n = 1;
-        Node current = head;
-        while (current.next != current) {
-            current.next = current.next.next;
-            n++;
-        }
-        return n;
-    }
-
-    public void delete(int index) {
+    public Node delete(int del) {
         if (head != null) {
- 
+
             int n = 1;
             Node current = copy(head);
             while (head.next != head) {
@@ -115,32 +96,32 @@ public class RemoveFromCircularLinkedList {
             }
 
             // two pointer to maintain direction
-            Node n1 = null, n2 = null;
+            Node n1, n2;
             int i = 0;
             while (i < n) {
-                if (i != 2) {
-                    n1 = current;
-                    n2 = current.next;
-                } else {
+                n1 = current;
+                n2 = current.next;
+                if (n2.val == del) {
                     n1.next = n2.next;
                     n2.next = null;
                 }
+                current = current.next;
                 i++;
             }
+            return current;
         }
+        return null;
     }
 
     public static void main(String[] args) {
-        RemoveFromCircularLinkedList r = new RemoveFromCircularLinkedList();
-        r.create(1);
-        r.create(2);
-        r.create(3);
-        r.create(4);
+        CircularLinkedList r = new CircularLinkedList();
+        r.add(1);
+        r.add(2);
+        r.add(3);
+        r.add(4);
 
-        r.display();
+        r.display(r.head);
 
-        r.delete(1);
-
-        r.display();
+        r.display(r.delete(3));
     }
 }
