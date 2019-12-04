@@ -96,7 +96,7 @@ public class MaximumPeopleAlive {
             i++;
         }
         
-        //left over
+        // left over
         while(j<deaths.length) {
             if(!data.containsKey(deaths[j])) {
                 data.put( deaths[j], -1);
