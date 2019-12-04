@@ -17,33 +17,43 @@ package com.alds.pathFinding;
  *
  */
 public class MaximumPathSumInMatrix {
-	
-	public static int R =3, C =3;
-	
-	public static int findMaximumPathSum(int[][] M) {
+		
+	public static int findMaximumPathSum(int[][] M, int R, int C) {
 		int res = 0;
 		
-		for(int i=0; i<R; i++) {
-			res = Math.max(res, M[i][0]);
+		// first row - max - this is to handle if there is just one row
+		for(int j=0; j<C; j++) {
+		    res = Math.max(res, M[0][j]);
 		}
 		
-		for(int i=1; i<R; i++) {		
+		System.out.println("Result : "+res);
+		
+		// start from second row - follow bottom up approach (main solution)
+		for(int i=1; i<R; i++) {	
+		    //reset result
+		    res = 0;
 			for(int j=0; j<C; j++) {
-				
-				// extreme left, no diagonal left
-				if(j < C-1) {
-					res += Math.max(M[i][j], M[i+1][j]);
-				}
-				
+			    
 				// middle
 				if(j > 0 && j < C-1) {
-					res += Math.max(M[i-1][i], Math.max(M[i][j], M[i+1][j]));
+					M[i][j] += Math.max(M[i-1][j-1], Math.max(M[i-1][j], M[i-1][j+1]));
+					System.out.println("Result for i="+i+",j="+j+"->"+M[i][j]);
 				}
 				
-				// extreme right, no diagonal right
-				if(j > 0) {
-					res += Math.max(M[i-1][j], M[i+1][j]);
+                // extreme right, no diagonal right
+				else if(j > 0) {
+				    M[i][j] += Math.max(M[i-1][j], M[i-1][j-1]);
+				    System.out.println("Result for i="+i+",j="+j+"->"+M[i][j]);
+                }
+                			
+				// extreme left, no diagonal 
+				else if(j < C-1) {
+				    M[i][j] += Math.max(M[i-1][j], M[i-1][j+1]);
+				    System.out.println("Result for i="+i+",j="+j+"->"+M[i][j]);
 				}
+				
+				res = Math.max(M[i][j], res);
+				System.out.println("Result Final : "+res);
 			}
 		}
 		return res;
@@ -51,12 +61,24 @@ public class MaximumPathSumInMatrix {
 
 	
 	public static void main(String[] args) {
-		 int mat[][] = { 
+		 int m1[][] = { 
 				 	{1, 2, 3},
 				 	{9, 8, 7},
 				 	{4, 5, 6} 
              }; 
+		 
+		 int m2[][] = { { 10, 10, 2, 0, 20, 4 }, 
+                 { 1, 0, 0, 30, 2, 5 }, 
+                 { 0, 10, 4, 0, 2, 0 }, 
+                 { 1, 0, 2, 20, 0, 4 }  
+             }; 
+		 
+		 int m3[][] = { 
+                 {1, 2, 3}
+          }; 
 
-		 System.out.println(findMaximumPathSum(mat)); 
+		 System.out.println(findMaximumPathSum(m1,3,3)); 
+		 System.out.println(findMaximumPathSum(m2,4,6)); 
+		 System.out.println(findMaximumPathSum(m3,1,3)); 
 	}
 }
