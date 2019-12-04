@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 /*
@@ -55,7 +56,7 @@ public class MaximumPeopleAlive {
         Arrays.sort(births);
         Arrays.sort(deaths);
              
-        Map<Integer, Integer> data = new HashMap<>();
+        Map<Integer, Integer> data = new TreeMap<>();
         
         int pop = 1;
         
@@ -106,13 +107,24 @@ public class MaximumPeopleAlive {
             j++;
         }
         
-        Map<Integer, Integer> sortedData = data.entrySet().stream()
-        .sorted((e1, e2) -> e1.getKey().compareTo(e2.getKey()))
-        .collect(Collectors.toMap(Entry::getKey, Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+        // use a Treemap instead
+        // Map<Integer, Integer> sortedData = data.entrySet().stream()
+        //.sorted((e1, e2) -> e1.getKey().compareTo(e2.getKey()))
+        // .collect(Collectors.toMap(Entry::getKey, Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
         
-        System.out.println(sortedData);
+        System.out.println(data);
         
-        return data.values().stream().max(Integer::compare).orElse(-1);
+        int maxP = 0;
+        int year = 0;
+        
+        for(Map.Entry<Integer, Integer> e : data.entrySet()) {
+            if(maxP < e.getValue()){
+                maxP = e.getValue();
+                year = e.getKey();
+            }
+        }
+        
+        return year;
     }
 
     
