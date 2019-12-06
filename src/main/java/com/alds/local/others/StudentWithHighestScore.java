@@ -10,79 +10,64 @@ import java.util.stream.Collectors;
  *
  */
 public class StudentWithHighestScore {
-    
-    static class Student implements Comparable<Student>{
+
+    static class Student implements Comparable<Student> {
         public String name;
         public int avgScore;
         public int count;
-        
-       @Override
-       public int compareTo(Student o) {
-           if(this.avgScore < o.avgScore) {
-               return 1;
-           } else {
-               return -1;
-           }
-       }        
-   }
-    
-    public static String solve(String[][] in) { 
-  
-       Map<String, Student> data = new HashMap<>();
-       
-       for(String[] row : in) {
-           if(!data.containsKey(row[0])) {
-               Student s = new Student();
-               s.name = row[0];
-               s.avgScore = Integer.parseInt(row[1]);
-               s.count = 1;
-               data.put(row[0], s);    
-           } else {
-               Student so = data.get(row[0]);
-               so.count +=1;
-               so.avgScore = (so.avgScore + Integer.parseInt(row[1])) / so.count;
-               data.put(row[0], so);  
-           }
-       }
-       
-       List<Student> res = data.values().stream().sorted().collect(Collectors.toList());
-       
-       return res.get(0).name;
+
+        @Override
+        public int compareTo(Student o) {
+            if (this.avgScore < o.avgScore) {
+                return 1;
+            } else {
+                return -1;
+            }
+        }
+
+        public String toString() {
+            return "Student[" + name + "," + avgScore + "," + count + "]";
+        }
     }
-    
-    public static double findHighestScore(String[][] in) { 
-        
+
+    public static String findHighestScore(String[][] in) {
+
         Map<String, Student> data = new HashMap<>();
-        
-        for(String[] row : in) {
-            if(!data.containsKey(row[0])) {
+
+        for (String[] row : in) {
+            if (!data.containsKey(row[0])) {
                 Student s = new Student();
                 s.name = row[0];
                 s.avgScore = Integer.parseInt(row[1]);
                 s.count = 1;
-                data.put(row[0], s);    
+                data.put(row[0], s);
             } else {
                 Student so = data.get(row[0]);
-                so.count +=1;
+                so.count += 1;
                 so.avgScore = so.avgScore + Integer.parseInt(row[1]);
             }
         }
-        
+
+        System.out.println(data);
+
         List<Student> res = data.values().stream().collect(Collectors.toList());
-        
+
+        String s = null;
         double max = 0;
-        for(Student stu : res) {
+        for (Student stu : res) {
             double avg = stu.avgScore / (double) stu.count;
-            if(max < avg){
+            if (max < avg) {
+                s = stu.name;
                 max = avg;
             }
         }
-        
-        return max;
-     }
-    
+
+        return s + " : " + max;
+    }
+
     public static void main(String[] args) {
-        String[][] in = {{"Jerry", "65"}, {"Bob", "91"}, {"Jerry", "23"}, {"Eric", "83"}, {"Eric", "68"}, {"Bob", "80"}, {"Jerry", "25"}};
+        String[][] in = { { "Jerry", "65" }, { "Bob", "71" }, { "Jerry", "23" }, { "Eric", "83" }, { "Eric", "68" },
+                { "Bob", "80" }, { "Jerry", "25" }, { "Eric", "98" } };
         System.out.println(findHighestScore(in));
     }
 
