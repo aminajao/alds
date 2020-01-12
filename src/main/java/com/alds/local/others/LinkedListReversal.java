@@ -18,7 +18,7 @@ public class LinkedListReversal {
 		}
 	}
 
-	public ListNode reverseList(ListNode head) {
+	public ListNode inPlaceReversal(ListNode head) {
 		ListNode current = head;
 		ListNode prev = null;
 		ListNode next = null;
@@ -32,6 +32,19 @@ public class LinkedListReversal {
 		}
 		return prev;
 	} 
+	
+	public ListNode reverseAndClone(ListNode head) {
+		ListNode prev = null;
+		
+		while(head != null) {
+			ListNode n = new ListNode(head.val);
+			n.next = prev;
+			prev = n;
+			
+			head = head.next;
+		}
+		return prev;
+	}
 	
 	ListNode create() {
 		ListNode head = new ListNode(1);
@@ -55,10 +68,15 @@ public class LinkedListReversal {
   
         System.out.println("Given Linked list"); 
         r.printList(head); 
-        head = r.reverseList(head); 
+        head = r.inPlaceReversal(head); 
         System.out.println(""); 
         System.out.println("Reversed linked list "); 
         r.printList(head); 
+        
+        ListNode rev = r.reverseAndClone(head);
+        System.out.println(""); 
+        System.out.println("Cloned reversed linked list "); 
+        r.printList(rev);
     } 
 
 }

@@ -61,7 +61,8 @@ public class SumListsProblem {
 			smL.next = new Node(sum);
 			
 			temp1 = temp1.next;
-			temp2 = temp2.next;			
+			temp2 = temp2.next;	
+			
 			smL = smL.next;
 		}
 		
@@ -85,10 +86,34 @@ public class SumListsProblem {
 		return String.valueOf(sum) + ":" + String.valueOf(carryOver);
 	}
 	
+	public Node addListRecursively(Node n1, Node n2, int carry) {
+		if(n1 == null || n2 == null) {
+			return null;
+		}
+		
+		int sum = carry;
+		if(n1!=null) {
+			sum+=n1.val;
+		}
+		if(n2!=null) {
+			sum+=n2.val;
+		}
+		
+		Node result = new Node(sum % 10); 
+		
+		if(n1.next!=null && n2.next!=null) {
+			carry = sum >=10 ? 1 : 0;
+			Node more = addListRecursively(n1.next, n2.next, carry);
+			result.next  = more;
+		}
+		return result;
+	}
+	
 	public static void main(String[] args) {
 		SumListsProblem problem = new SumListsProblem();
 		Node n1 = problem.create();
 		Node n2 = problem.create2();
-		problem.sumList(n1, n2);
+		//problem.sumList(n1, n2);
+		problem.addListRecursively(n1, n2, 0);
 	}
  }
