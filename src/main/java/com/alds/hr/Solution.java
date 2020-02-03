@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.alds.hr;
 
 /**
@@ -8,5 +5,7 @@ package com.alds.hr;
  *
  */
 public class Solution {
+    
+    
 
 }
