@@ -40,6 +40,8 @@ public class DetectTheDomain {
         System.out.println(String.join(";", domainNames.stream().collect(Collectors.toList())));
 
         sc.close();     
+        
+        
     }
     
     public static String getDomains(List<String> lines) {
