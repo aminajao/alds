@@ -1,4 +1,4 @@
-package com.alds.hr;
+package com.alds.hr.transferwise;
 
 import java.util.List;
 import java.util.Scanner;
