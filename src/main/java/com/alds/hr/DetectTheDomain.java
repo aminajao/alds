@@ -1,5 +1,6 @@
 package com.alds.hr;
 
+import java.util.List;
 import java.util.Scanner;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -39,6 +40,27 @@ public class DetectTheDomain {
         System.out.println(String.join(";", domainNames.stream().collect(Collectors.toList())));
 
         sc.close();     
+    }
+    
+    public static String getDomains(List<String> lines) {
+    	if(lines.isEmpty()) {
+    		return "";
+    	}
+    	 
+    	 StringBuilder sb = new StringBuilder();
+         lines.stream().forEach(data -> sb.append(data));
+         
+         String regex = "https?://(www.|ww2.|web.)?([a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)+)";
+         Pattern p = Pattern.compile(regex);
+         SortedSet<String> domainNames = new TreeSet<>();
+         
+         Matcher m = p.matcher(sb.toString());
+         
+         while(m.find()){
+             domainNames.add(m.group(2));
+         }
+         
+         return String.join(";", domainNames.stream().collect(Collectors.toList()));
     }
 
 }

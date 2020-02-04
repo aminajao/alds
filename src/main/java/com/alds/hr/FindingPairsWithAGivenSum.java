@@ -1,8 +1,10 @@
 package com.alds.hr;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
 /**
  * @author rohsi
  * 
@@ -51,25 +53,26 @@ public class FindingPairsWithAGivenSum {
 	}
 	
 	// requires extra space
-	public static int findDistinctPairs(int[] arr, int k) {
+	public static int findDistinctPairs(List<Integer> arr, long k) {
 	    Map<Integer, Integer> data = new HashMap<>();
 	    int pairs = 0;
 	    
-	    for(int i=0; i<arr.length; i++) {
-	        if(data.containsKey(k-arr[i])) {
-	            int freq = data.get(k-arr[i])-1;
+	    for(int i=0; i<arr.size(); i++) {
+	    	int res = (int) (k-arr.get(i));
+	        if(data.containsKey(res)) {        	
+	            int freq = data.get(res)-1;
 	            pairs++;
-	            System.out.println(arr[i] + ", " + (k-arr[i]));  
+	            System.out.println(arr.get(i) + ", " + (k-arr.get(i)));  
 	            if(freq==0) {
-	                data.remove(k-arr[i]);
+	                data.remove(res);
 	            } else {
-	                data.put(k-arr[i], freq);
+	                data.put(res, freq);
 	            }
 	        } else {
-	            if(!data.containsKey(arr[i])) {
-	                data.put(arr[i], 1);
+	            if(!data.containsKey(arr.get(i))) {
+	                data.put(arr.get(i), 1);
 	            } else {
-	                data.put(arr[i], data.get(arr[i])+1);
+	                data.put(arr.get(i), data.get(arr.get(i))+1);
 	            }
 	        }
 	    }
@@ -77,19 +80,24 @@ public class FindingPairsWithAGivenSum {
 	}
     
     // faster and in place search (but needs sorting)
-    public static void printPairsUsingTwoPointers(int[] numbers, int k) {
-        if (numbers.length < 2) {
-            return;
+    public static int printPairsUsingTwoPointers(List<Integer> arr, long k) {
+        if (arr.size() < 2) {
+            return 0;
         }
-        Arrays.sort(numbers);
+        Collections.sort(arr);
+        
+        List<String> noDups = new ArrayList<String>();
 
+        int pairs = 0;
         int left = 0;
-        int right = numbers.length - 1;
+        int right = arr.size() - 1;
 
         while (left < right) {
-            int sum = numbers[left] + numbers[right];
+            int sum = arr.get(left) + arr.get(right);
             if (sum == k) {
-                System.out.printf("(%d, %d) %n", numbers[left], numbers[right]);
+            	pairs++;
+                System.out.printf("(%d, %d) %n", arr.get(left), arr.get(right));
+                noDups.add(arr.get(left)+":"+arr.get(right));
                 left++;
                 right--;
             } else if (sum < k) {
@@ -98,20 +106,37 @@ public class FindingPairsWithAGivenSum {
                 right--;
             }
         }
+        return (int) noDups.stream().distinct().count();
     }
 
 
 	public static void main(String[] args) {
 		int[] test ={10, 12, 10, 15, -1, 7, 6, 5, 4, 2, 1, 1, 1};
-	      int[] test2 = {1, 2, 2, 2, 3, 4, 4, 4};
+	    int[] test2 = {1, 2, 2, 2, 3, 4, 4, 4};
 		
-		System.out.println("Pairs (Hashing) : "+findDistinctPairs(test, 11));
-		System.out.println("Pairs (Hashing) : "+findDistinctPairs(test2, 5));
+		//System.out.println("Pairs (Hashing) : "+findDistinctPairs(test, 11));
+		
+		List<Integer> data = new ArrayList<Integer>();
+		data.add(5);
+		data.add(7);
+		data.add(9);
+		data.add(13);
+		data.add(11);
+		data.add(6);
+		data.add(6);
+		data.add(3);
+		data.add(3);
+		data.add(5);
+		data.add(7);
+		
+		System.out.println("Pairs (Hashing) : "+findDistinctPairs(data, 12));
+		
+		System.out.println("Pairs (Two Pointers) :"+printPairsUsingTwoPointers(data, 12));
+		//printPairsUsingTwoPointers(test2, 5);
 		
 		System.out.println("Pairs (Two Pointers) :");
-		printPairsUsingTwoPointers(test2, 5);
-		
-		System.out.println("Pairs (Two Pointers) :");
-        printPairsUsingTwoPointers(test, 11);
+        //printPairsUsingTwoPointers(test, 11);
 	}
+	
+	
 }

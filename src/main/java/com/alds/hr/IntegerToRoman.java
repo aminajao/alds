@@ -1,18 +1,31 @@
 package com.alds.hr;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author rohsingh
  *
  */
 public class IntegerToRoman {
     
-    public static String intToRoman(int num) {
+    public static List<String> intToRoman(List<Integer> nums) {
+    	if(nums.isEmpty()) {
+    		return new ArrayList<>();
+    	}
+    		
         String[] M = {"", "M", "MM", "MMM"};
         String[] C = {"", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"};
         String[] X = {"", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"};
         String[] I = {"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"};
+    	
+    	List<String> out = new ArrayList<>();
+    	
+    	for(Integer in : nums) {
+    		out.add(M[in/1000] + C[(in%1000)/100] + X[(in%100)/10] + I[in%10]);
+    	}
 
-        return M[num/1000] + C[(num%1000)/100] + X[(num%100)/10] + I[num%10];
+        return out;
     }
     
     public static String intToRoman2(int num) {
@@ -31,7 +44,13 @@ public class IntegerToRoman {
     
     public static void main(String[] args) {
         long start = System.nanoTime();
-        System.out.println(intToRoman(2998));
+        List<Integer> nums = new ArrayList<Integer>();
+        nums.add(1);
+        nums.add(2);
+        nums.add(3);
+        nums.add(4);
+        nums.add(5);
+        System.out.println(intToRoman(nums));
         long finish = System.nanoTime() - start;      
         System.out.println("- in " +finish);
     }
