@@ -3,6 +3,9 @@ package com.alds.hr.agoda;
 /**
  * 
  * 
+ * Minimum Start Value
+ * 
+ * 
  * Given array of integers. Calculate a running sum of x plus each array element, from left to right. 
  * The running sum must never get below 1. Given an array of integers, determine the minimum value of x.
  * For Example, arr = [-2, 3, 1, -5]. If x = 4, the following results are obtained:
@@ -24,7 +27,7 @@ package com.alds.hr.agoda;
  */
 public class FindMinValue {
 
-    public static int findMinValue(int arr[]) {
+    public static int findMinValue(int[] arr) {
         int n = arr.length;
         int guess = -1000;
         int runningSum;
