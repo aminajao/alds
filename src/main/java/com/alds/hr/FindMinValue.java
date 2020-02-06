@@ -10,7 +10,7 @@ public class FindMinValue {
         
         int n = arr.length;
   
-        // using log property add every logarithmic  
+/*        // using log property add every logarithmic  
         // value of element to val  
         int val = 0; // where double is long double  
         for (int i = 0; i < n; i++) { 
@@ -24,11 +24,23 @@ public class FindMinValue {
                return 0;
             }
         } 
-  
-        // set left and right extremities to find  
-        // min value  
-       return val;
+        */
+        int guess = 0;
+        int runningSum = 0;
+        while(true) {
+            runningSum = guess;
+            for (int i = 0; i < n; i++) { 
+                runningSum += arr[i];
+                if(runningSum < 1) {
+                    guess++;
+                    break;
+                }
+            }
+            return guess;
+        }
     } 
+    
+    
     
     public static void main(String[] args) {
         
