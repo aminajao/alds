@@ -72,6 +72,6 @@ public class Klarna {
 	}
     
     public static void main(String[] args) {
-        
+        mutipleOf3And5(20);
     }
 }
