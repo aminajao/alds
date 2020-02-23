@@ -1,15 +1,6 @@
-/*
-* Copyright (C) 2020 BlackRock.
-*
-* Created on Feb 22, 2020
-*
-* Last edited by: $Author: $
-*             on: $Date: $
-*       Filename: $Id:  $
-*       Revision: $Revision: $
-*/
 package com.alds.hr.klarna;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
@@ -71,10 +62,8 @@ public class Klarna {
 		return true;
 	}
     
-    public static void main(String[] args) {
-        mutipleOf3And5(20);
-    }
-    
+	
+	// 1
     private final int SIZE = 6;
     private final int NUMBER_OF_LASTCHARS_NOTTO_MASK = 4;
 
@@ -107,6 +96,8 @@ public class Klarna {
 
     }
     
+    
+    // 2
     private final int EDGE_CASES = 10;
 
     public String numberToOrdinal(Integer number) {
@@ -151,11 +142,12 @@ public class Klarna {
         return ordinalSuffix;
     }
     
-    private Set<String> operators = new HashSet<>(Arrays.asList("/", "+","-","*"));
+    
+    // 3
+    private final List<String> operators = Stream.of(Operator.values()).map(Operator::getOp).collect(Collectors.toList());
     private Stack<Double> bucket = new Stack<>();
 
     public double evaluate(String expr) {
-
         if(expr == null || expr.isEmpty()){
             return 0.0;
         }
@@ -164,12 +156,11 @@ public class Klarna {
             if (operators.contains(input)) {
                 Double operand2 = bucket.pop();
                 Double operand1 = bucket.pop();
-                Double result = applyOperator(input,operand1,operand2);
+                Double result = Operator.valueOf(input).apply(operand1, operand2);
                 bucket.push(result);
             }else{
                 bucket.push(Double.parseDouble(input));
             }
-
         });
         return bucket.pop();
     }
@@ -193,4 +184,48 @@ public class Klarna {
 
         return result;
     }
+    
+    enum Operator {
+        DIVIDE("/") {
+        	@Override
+        	public Double apply(Double op1, Double op2) {
+        		return op1 / op2;
+        	}
+        },
+        ADD("+") {
+			@Override
+			public Double apply(Double op1, Double op2) {
+				return op1 + op2;
+			}
+		},
+        SUBTRACT("-") {
+			@Override
+			public Double apply(Double op1, Double op2) {
+				return op1 - op2;
+			}
+		},
+        MUTIPLY("*") {
+			@Override
+			public Double apply(Double op1, Double op2) {
+				return op1 * op2;
+			}
+		};
+      
+        String op;
+      
+        Operator(String op) {
+          this.op = op;
+        }
+      
+        public String getOp() {
+          return op;
+        }
+        
+        public abstract Double apply(Double op1, Double op2);
+    }
+    
+    public static void main(String[] args) {
+        mutipleOf3And5(20);
+    }
+    
 }
