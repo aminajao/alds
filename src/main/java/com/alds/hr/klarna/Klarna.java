@@ -106,4 +106,48 @@ public class Klarna {
         return creditCardNumber;
 
     }
+    
+    private final int EDGE_CASES = 10;
+
+    public String numberToOrdinal(Integer number) {
+        String ordinal, ordinalSuffix;
+
+        if (number.equals(0)) {
+            return number.toString();
+        }
+
+        if(isEdgeCase(number)){
+            ordinalSuffix = "th";
+        }else{
+            ordinalSuffix = determineOrdinalSuffix(number);
+        }
+
+        ordinal = number.toString();
+        return ordinal.concat(ordinalSuffix);
+
+    }
+
+    private boolean isEdgeCase(Integer number){
+        int modeToTen = number % 10;
+        int modeToHundred = number % 100;
+        return ((modeToHundred - modeToTen) == EDGE_CASES);
+    }
+
+    private String determineOrdinalSuffix(Integer number){
+        String ordinalSuffix;
+        number = number % 10;
+        switch (number){
+            case 1:
+                ordinalSuffix = "st";
+                break;
+            case 2:
+                ordinalSuffix = "nd";
+                break;
+            case 3:
+                ordinalSuffix = "rd";
+                break;
+            default:ordinalSuffix = "th";
+        }
+        return ordinalSuffix;
+    }
 }
