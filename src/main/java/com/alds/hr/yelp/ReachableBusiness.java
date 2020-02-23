@@ -5,6 +5,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 
+ * @author rohsingh
+ * 
+ * 
+ * 
+		a
+		3
+		a b 2
+		a c 4
+		b d 5
+
+		b
+ *
+ */
+
 public class ReachableBusiness {
 
 	class Business {
