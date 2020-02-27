@@ -1,5 +1,8 @@
 package com.alds.design.elevator.service;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.alds.design.elevator.model.ElevatorCommand;
 
 /**
@@ -8,10 +11,18 @@ import com.alds.design.elevator.model.ElevatorCommand;
  */
 public class ElevatorService {
     
-    ElevatorCommand command;
+    Set<ElevatorCommand> commands;
 
-    public ElevatorService(ElevatorCommand command) {
-        this.command = command;
+    public ElevatorService() {
+        this.commands = new HashSet<>();
+    }
+
+    public Set<ElevatorCommand> getCommands() {
+        return commands;
+    }
+    
+    public void addCommand(ElevatorCommand command) {
+        this.commands.add(command);
     }
     
 }
