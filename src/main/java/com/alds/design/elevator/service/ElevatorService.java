@@ -25,4 +25,10 @@ public class ElevatorService {
         this.commands.add(command);
     }
     
+    public void processCommand() {
+    	if(!commands.isEmpty()) {
+    		// write core processing logic here
+    	}
+    }
+    
 }

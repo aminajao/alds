@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 import com.alds.design.elevator.model.Elevator;
+import com.alds.design.elevator.model.ElevatorCommand;
 import com.alds.design.elevator.model.UserAction;
 import com.alds.design.elevator.service.ElevatorService;
 
@@ -33,7 +34,11 @@ public class ElevatorController {
     
     public void executeUserAction(UserAction action) {
     	if(action!= null) {
-    		//elevatorService.addCommand(command);
+    		elevatorService.addCommand(new ElevatorCommand(action));
     	}
+    }
+    
+    public void start() {
+    	System.out.println("Elevator System started..");
     }
 }

@@ -12,8 +12,14 @@ public class Elevator {
     
     public Elevator(int elevatorId) {
         this.elevatorId = elevatorId;
+        this.status = Status.IDLE;
     }
 
+    public Elevator(int elevatorId, Status status) {
+        this.elevatorId = elevatorId;
+        this.status = status;
+    }
+    
     public Direction getDirection() {
         return direction;
     }
