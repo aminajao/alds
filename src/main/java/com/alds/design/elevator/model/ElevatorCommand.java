@@ -11,6 +11,7 @@ public class ElevatorCommand {
 	private int userId;
 	private int level;
 	private Direction direction;
+	private int elevatorId;
 	
 	public ElevatorCommand(int level) {
 		super();
@@ -21,6 +22,7 @@ public class ElevatorCommand {
 		this.userId = action.getUserId();
 		this.level = action.getLevel();
 		this.direction = action.getDirection();
+		this.elevatorId = action.getElevatorId();
 	}
 
 	public int getUserId() {
@@ -33,6 +35,10 @@ public class ElevatorCommand {
 
 	public Direction getDirection() {
 		return direction;
+	}
+
+	public int getElevatorId() {
+		return elevatorId;
 	}
 
 	@Override

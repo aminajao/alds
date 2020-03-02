@@ -9,11 +9,13 @@ public class UserAction {
 	private int userId;
 	private Direction direction;
 	private int level;
+	private int elevatorId;
 	
-	public UserAction(Direction direction, int level) {
+	public UserAction(Direction direction, int level, int elevatorId) {
 		super();
 		this.direction = direction;
 		this.level = level;
+		this.elevatorId = elevatorId;
 	}
 
 	public Direction getDirection() {
@@ -30,5 +32,9 @@ public class UserAction {
 
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+
+	public int getElevatorId() {
+		return elevatorId;
 	}
 }
