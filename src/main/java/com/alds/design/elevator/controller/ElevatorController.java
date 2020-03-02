@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 import com.alds.design.elevator.model.Elevator;
+import com.alds.design.elevator.model.UserAction;
 import com.alds.design.elevator.service.ElevatorService;
 
 /**
@@ -30,5 +31,9 @@ public class ElevatorController {
         IntStream.range(1, elevatorsToInit).forEach(i-> elevators.add(new Elevator(i)));
     }
     
-
+    public void executeUserAction(UserAction action) {
+    	if(action!= null) {
+    		//elevatorService.addCommand(command);
+    	}
+    }
 }

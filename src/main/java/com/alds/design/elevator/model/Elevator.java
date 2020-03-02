@@ -30,4 +30,8 @@ public class Elevator {
         this.status = status;
     }
 
+	public int getElevatorId() {
+		return elevatorId;
+	}
+
 }
