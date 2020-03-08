@@ -16,12 +16,14 @@ public class Solution {
 
 /**
  * 
- * Select    customer_number
-FROM
-    orders
-GROUP BY customer_number
-ORDER BY COUNT(*) DESC
-LIMIT 1
+Select a.BG, a.AcceptorAmount-b.DonarAmount as MoreBloodNeeded
+From
+(Select BG,SUM(AMOUNT)as AcceptorAmount
+From ACCEPTOR Group by BG) a
+LEFT JOIN
+(Select BG, SUM(Amount) as DonarAmount
+From DONOR Group by BG) b on a.BG=b.BG
+WHERE (a.AcceptorAmount - b.DonarAmount > 0)
  */
 	
 }
