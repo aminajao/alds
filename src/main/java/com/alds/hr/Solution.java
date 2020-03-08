@@ -13,6 +13,15 @@ public class Solution {
     <artifactId>hibernate-entitymanager</artifactId>
     <version>4.3.7.Final</version>
 </dependency>
-*/
+
+/**
+ * 
+ * Select    customer_number
+FROM
+    orders
+GROUP BY customer_number
+ORDER BY COUNT(*) DESC
+LIMIT 1
+ */
 	
 }
