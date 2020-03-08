@@ -16,14 +16,9 @@ public class Solution {
 
 /**
  * 
-Select a.BG, a.AcceptorAmount-b.DonarAmount as MoreBloodNeeded
-From
-(Select BG,SUM(AMOUNT)as AcceptorAmount
-From ACCEPTOR Group by BG) a
-LEFT JOIN
-(Select BG, SUM(Amount) as DonarAmount
-From DONOR Group by BG) b on a.BG=b.BG
-WHERE (a.AcceptorAmount - b.DonarAmount > 0)
+SELECT "Donor" AS Type Gender,BG, COUNT(BG) CountValue FROM Donor GROUP BY Gender,BG
+UNION ALL
+SELECT "ACCEPTOR" AS Type Gender,BG, COUNT(BG) CountValue FROM ACCEPTOR GROUP BY Gender,BG
  */
 	
 }
