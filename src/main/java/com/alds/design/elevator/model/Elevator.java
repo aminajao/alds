@@ -1,6 +1,6 @@
 package com.alds.design.elevator.model;
 
-import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author rohsingh
@@ -9,34 +9,34 @@ import java.util.Set;
 public class Elevator {
 
 	private int elevatorId;
-	private Direction direction;
-	private Status status;
+	private ElevatorDirection direction;
+	private ElevatorStatus status;
 	private int targetLevel;
-	private Set<ElevatorCommand> commands;
+	private ConcurrentHashMap<ElevatorCommand, Elevator> commandMap;
 
 	public Elevator(int elevatorId) {
 		this.elevatorId = elevatorId;
-		this.status = Status.IDLE;
+		this.status = ElevatorStatus.IDLE;
 	}
 
-	public Elevator(int elevatorId, Status status) {
+	public Elevator(int elevatorId, ElevatorStatus status) {
 		this.elevatorId = elevatorId;
 		this.status = status;
 	}
 
-	public Direction getDirection() {
+	public ElevatorDirection getDirection() {
 		return direction;
 	}
 
-	public void setDirection(Direction direction) {
+	public void setDirection(ElevatorDirection direction) {
 		this.direction = direction;
 	}
 
-	public Status getStatus() {
+	public ElevatorStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(Status status) {
+	public void setStatus(ElevatorStatus status) {
 		this.status = status;
 	}
 
@@ -52,12 +52,12 @@ public class Elevator {
 		this.targetLevel = targetLevel;
 	}
 
-	public Set<ElevatorCommand> getCommands() {
-		return commands;
+	public void addCommand(ElevatorCommand command) {
+		this.commandMap.put(command, this);
 	}
 
-	public void addCommand(ElevatorCommand command) {
-		this.commands.add(command);
+	public ConcurrentHashMap<ElevatorCommand, Elevator> getCommandMap() {
+		return commandMap;
 	}
 
 }

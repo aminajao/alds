@@ -2,10 +2,9 @@ package com.alds.design.elevator.controller;
 
 import java.util.stream.IntStream;
 
-import com.alds.design.elevator.model.Elevator;
-import com.alds.design.elevator.model.ElevatorCommand;
-import com.alds.design.elevator.model.UserAction;
-import com.alds.design.elevator.service.ElevatorService;
+import com.alds.design.elevator.model.ElevatorStatus;
+import com.alds.design.elevator.processor.ElevatorCommandProcessor;
+import com.alds.design.elevator.processor.ElevatorThread;
 
 /**
  * @author rohsingh
@@ -15,25 +14,25 @@ public class ElevatorController {
 
 	private static final int DEAFULT_NUMBER_OF_ELEVATOR = 1;
 
-	ElevatorService elevatorService;
+	ElevatorCommandProcessor elevatorCommandProcessor;
+	
+	int elevatorsToInit;
 
-	public ElevatorController(ElevatorService elevatorService) {
-		this.elevatorService = elevatorService;
-		elevatorService.getElevators().add(new Elevator(DEAFULT_NUMBER_OF_ELEVATOR));
+	public ElevatorController(ElevatorCommandProcessor elevatorCommandProcessor, int elevatorsToInit) {
+		this.elevatorCommandProcessor = elevatorCommandProcessor;
+		this.elevatorsToInit = elevatorsToInit;
 	}
-
-	public ElevatorController(ElevatorService elevatorService, int elevatorsToInit) {
-		this.elevatorService = elevatorService;
-		IntStream.range(1, elevatorsToInit).forEach(i -> elevatorService.getElevators().add(new Elevator(i)));
-	}
-
-	public void executeUserAction(UserAction action) {
-		if (action != null) {
-			elevatorService.getElevator(action.getElevatorId()).addCommand(new ElevatorCommand(action));
-		}
+	
+	public ElevatorController(ElevatorCommandProcessor elevatorCommandProcessor) {
+		this(elevatorCommandProcessor, DEAFULT_NUMBER_OF_ELEVATOR);
 	}
 
 	public void start() {
+		System.out.println("Elevator System starting..");
+		IntStream.range(1, elevatorsToInit).forEach(i -> {
+			ElevatorThread elevT = new ElevatorThread(i, ElevatorStatus.IDLE);
+			elevatorCommandProcessor.getElevators().add(elevT);			
+		});
 		System.out.println("Elevator System started..");
 	}
 }

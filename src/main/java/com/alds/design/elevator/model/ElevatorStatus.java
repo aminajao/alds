@@ -4,7 +4,7 @@ package com.alds.design.elevator.model;
  * @author rohsingh
  *
  */
-public enum Status {
+public enum ElevatorStatus {
 
     IDLE(0),
     MOVING(1),
@@ -12,7 +12,7 @@ public enum Status {
 	
 	int status;
 	
-	Status(int status) {
+	ElevatorStatus(int status) {
 		this.status = status;
 	}
 

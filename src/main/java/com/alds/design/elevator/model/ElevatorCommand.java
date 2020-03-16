@@ -10,7 +10,7 @@ public class ElevatorCommand {
 	
 	private int userId;
 	private int level;
-	private Direction direction;
+	private ElevatorDirection direction;
 	private int elevatorId;
 	
 	public ElevatorCommand(int level) {
@@ -33,7 +33,7 @@ public class ElevatorCommand {
 		return level;
 	}
 
-	public Direction getDirection() {
+	public ElevatorDirection getDirection() {
 		return direction;
 	}
 

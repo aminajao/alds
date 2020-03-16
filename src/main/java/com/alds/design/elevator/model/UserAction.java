@@ -7,18 +7,18 @@ package com.alds.design.elevator.model;
 public class UserAction {
 	
 	private int userId;
-	private Direction direction;
+	private ElevatorDirection direction;
 	private int level;
 	private int elevatorId;
 	
-	public UserAction(Direction direction, int level, int elevatorId) {
+	public UserAction(ElevatorDirection direction, int level, int elevatorId) {
 		super();
 		this.direction = direction;
 		this.level = level;
 		this.elevatorId = elevatorId;
 	}
 
-	public Direction getDirection() {
+	public ElevatorDirection getDirection() {
 		return direction;
 	}
 
