@@ -1,7 +1,5 @@
 package com.alds.design.elevator.controller;
 
-import java.util.stream.IntStream;
-
 import com.alds.design.elevator.model.ElevatorStatus;
 import com.alds.design.elevator.processor.ElevatorCommandProcessor;
 import com.alds.design.elevator.processor.ElevatorThread;
@@ -29,10 +27,9 @@ public class ElevatorController {
 
 	public void start() {
 		System.out.println("Elevator System starting..");
-		IntStream.range(1, elevatorsToInit).forEach(i -> {
-			ElevatorThread elevT = new ElevatorThread(i, ElevatorStatus.IDLE);
-			elevatorCommandProcessor.getElevators().add(elevT);			
-		});
+		ElevatorThread elevT = new ElevatorThread(1, ElevatorStatus.IDLE);
+		elevatorCommandProcessor.getElevators().add(elevT);			
+		elevatorCommandProcessor.getElevators().forEach(Thread::start);
 		System.out.println("Elevator System started..");
 	}
 }

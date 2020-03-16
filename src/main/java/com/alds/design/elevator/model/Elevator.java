@@ -13,15 +13,19 @@ public class Elevator {
 	private ElevatorStatus status;
 	private int targetLevel;
 	private ConcurrentHashMap<ElevatorCommand, Elevator> commandMap;
-
+	
+	public Elevator() {
+		this(1);
+	}
+	
 	public Elevator(int elevatorId) {
-		this.elevatorId = elevatorId;
-		this.status = ElevatorStatus.IDLE;
+		this(elevatorId, ElevatorStatus.IDLE);
 	}
 
 	public Elevator(int elevatorId, ElevatorStatus status) {
 		this.elevatorId = elevatorId;
 		this.status = status;
+		this.commandMap = new ConcurrentHashMap<>();
 	}
 
 	public ElevatorDirection getDirection() {

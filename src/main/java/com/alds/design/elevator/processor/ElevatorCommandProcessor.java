@@ -20,7 +20,7 @@ public class ElevatorCommandProcessor {
 	List<ElevatorThread> elevators;
 	
 	public ElevatorCommandProcessor() {
-		this.elevatorQueue =new ElevatorQueue();
+		this.elevatorQueue = new ElevatorQueue();
 		this.elevators = new ArrayList<>();
 	}
 	
