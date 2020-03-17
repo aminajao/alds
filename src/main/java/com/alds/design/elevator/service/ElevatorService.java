@@ -3,9 +3,7 @@
  */
 package com.alds.design.elevator.service;
 
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 import com.alds.design.elevator.model.Elevator;
@@ -38,31 +36,29 @@ import com.alds.design.elevator.model.ElevatorStatus;
 public class ElevatorService {
 
 	private static final int MAX_ELEVATORS = 8;
-	
+
 	private static final int MAX_REQUESTS = 5;
 
 	final Elevator[] elevators;
-	
+
 	final int elevatorCount;
-	
+
 	private AtomicInteger activeRequests = new AtomicInteger();
-	
+
 	final ReentrantLock lock = new ReentrantLock();
-	Condition notEmpty = lock.newCondition();
-	Condition notFull = lock.newCondition();
 
 	public ElevatorService(int elevatorCount) {
 		this.elevatorCount = elevatorCount < MAX_ELEVATORS ? elevatorCount : MAX_ELEVATORS;
 		this.elevators = new Elevator[elevatorCount];
 	}
-	
+
 	public boolean updateStatus(ElevatorStatus elevatorStatus, int elevatorId) {
-        if(elevatorId < 0 || elevatorId > elevatorCount-1){
-            return false;
-        }
-        return elevators[elevatorId].updateStatus(elevatorStatus);
-    }
-	
+		if(elevatorId < 0 || elevatorId > elevatorCount-1){
+			return false;
+		}
+		return elevators[elevatorId].updateStatus(elevatorStatus);
+	}
+
 	public void pickUpRequest(int floorRequest) throws InterruptedException {
 		System.out.println("Pick up request received : "+floorRequest);
 		lock.lock();
@@ -71,19 +67,14 @@ public class ElevatorService {
 			Elevator minUpElevator = null;
 			int minDown = Integer.MAX_VALUE;
 			Elevator minDownElevator = null;
-			
-			while(activeRequests.get() == MAX_REQUESTS) {
-				// full, wait for not full
-				notFull.await();
-			}
-	
+
 			for(Elevator elevator : elevators){
-				
-	            //Don't schedule anything for given under maintenance or if elevator is already servicing more than average load on system
+
+				//Don't schedule anything for given under maintenance or if elevator is already servicing more than average load on system
 				if(elevator.getStatus() == ElevatorStatus.REPAIR || elevator.getTotalFloorRequests() >= MAX_REQUESTS){
 					continue;
 				}
-	
+
 				if((elevator.getDirection() == ElevatorDirection.UP
 						|| elevator.getDirection() == ElevatorDirection.NONE)
 						&& elevator.getCurrentFloor() < floorRequest){
@@ -102,8 +93,8 @@ public class ElevatorService {
 					}
 				}
 			}
-	
-	        //If we found 2 elevators in both up and down direction. Assign the pickUp requests to closest elevator.
+
+			//If we found 2 elevators in both up and down direction. Assign the pickUp requests to closest elevator.
 			if(minDownElevator != null && minUpElevator != null){
 				if(minDown < minUp){
 					minDownElevator.addNewFloorRequest(floorRequest);
@@ -111,44 +102,46 @@ public class ElevatorService {
 					minUpElevator.addNewFloorRequest(floorRequest);
 				}
 			}
-			
-	       	//If we found only 1 closest elevator in down direction. Assign the pickUp requests to it.
+
+			//If we found only 1 closest elevator in down direction. Assign the pickUp requests to it.
 			else if(minDownElevator != null){
 				minDownElevator.addNewFloorRequest(floorRequest);
 			}
-			
-	        //If we found only 1 closest elevator in up direction. Assign the pickUp requests to it.
+
+			//If we found only 1 closest elevator in up direction. Assign the pickUp requests to it.
 			else if(minUpElevator != null){
 				minUpElevator.addNewFloorRequest(floorRequest);
 			}
-			
-	        // We could not allocate the request to any elevator. All elevators must be under maintenance. Return false.
+
+			// We could not allocate the request to any elevator. All elevators must be under maintenance. Return false.
 			else{
 				// do nothing
 				System.out.println("Unable to serve request by any elevator");
 			}
 			activeRequests.getAndIncrement();
-			notEmpty.signal();
 		} finally {
 			lock.unlock();
 		}
-		
+
+		Thread.sleep(2000);
 	}
 
-    public void moveElevator() throws InterruptedException {
-        //Loop though every elevator and call move
-    	lock.lock();
-    	try {
-    		while(activeRequests.get() == 0) {
-    			// empty, wait for not empty
-    			notEmpty.await();
-    		}
-    		Arrays.stream(elevators).forEach(Elevator::moveAndCheckIfServed);
-    		notFull.signal();
-    	} finally {
-    		lock.unlock();
-    	}
-    }
+	public void moveElevator() throws InterruptedException {
+		// Loop though every elevator and call move
+		lock.lock();
+		try {
+			for (Elevator currElevator : elevators) {
+				while (currElevator.getTotalFloorRequests() > 0)
+					if (currElevator.moveAndCheckIfServed()) {
+						System.out.println("Moving Elevator : "+activeRequests.get());
+						activeRequests.decrementAndGet();
+					}
+			}
+		} finally {
+			lock.unlock();
+		}
+		Thread.sleep(2000);
+	}
 
 	public Elevator[] getElevators() {
 		return elevators;

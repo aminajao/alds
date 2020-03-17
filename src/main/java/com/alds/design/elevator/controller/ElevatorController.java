@@ -1,6 +1,8 @@
 package com.alds.design.elevator.controller;
 
 
+import java.util.concurrent.ThreadLocalRandom;
+
 import com.alds.design.elevator.model.Elevator;
 import com.alds.design.elevator.service.ElevatorService;
 
@@ -43,11 +45,27 @@ public class ElevatorController {
 		System.out.println("Elevator System started..");
 	}
 	
-	public void sendFloorRequest(int request) throws InterruptedException {
-		elevatorService.pickUpRequest(request);
+	public void sendFloorRequest() throws InterruptedException {	
+		new Thread(() ->  {
+			while(true) {
+				try {
+					elevatorService.pickUpRequest(ThreadLocalRandom.current().nextInt(10));
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
 	}
 	
 	public void consumeFloorRequest() throws InterruptedException {
-		elevatorService.moveElevator();
+		new Thread(() ->  {
+			while(true) {
+				try {
+					elevatorService.moveElevator();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
 	}
 }

@@ -81,6 +81,9 @@ public class Elevator {
 		if(direction == ElevatorDirection.UP){
 			if(upFloorRequests.first() == currentFloor){
 				upFloorRequests.pollFirst();
+				if(upFloorRequests.size() == 0){
+		            direction = ElevatorDirection.NONE;
+		        }
 				return true;
 			}else {
 				currentFloor++;
@@ -88,6 +91,9 @@ public class Elevator {
 		}else if(direction == ElevatorDirection.DOWN){
 			if(downFloorRequests.first() == currentFloor){
 				downFloorRequests.pollFirst();
+				if(downFloorRequests.size() == 0){
+		            direction = ElevatorDirection.NONE;
+		        }
 				return true;
 			} else {
 				currentFloor--;
