@@ -8,6 +8,21 @@ import com.alds.design.elevator.model.ElevatorStatus;
 
 /**
  * @author rohsingh
+ * 
+ * 
+ 	Elevator Scheduling Algorithm:
+    ---------------------------
+    -> Upper bound of active requests per elevator (Average per elevator) = activeRequests/elevatorCount + 1
+    -> Do not assign the request to an elevator if it is under MAINTENANCE or is already serving more than average number of active requests in the system.
+    -> Now, among all elevators excluding above ones, find the closest elevator moving in direction of request or is IDLE.
+        -> Case I -     There are 2 elevators - 1 above the requestFloor coming down and 1 below the requestFloor which is coming up:
+                        Assign the request to the closest of these 2.
+                        return true
+        -> Case II -    There is only 1 elevator moving towards the requestFloor:
+                        Assign the request to the given elevator.
+                        return true
+        -> Case III -   No elevators were found eligible to serve the request. Can happen if all the elevators are under MAINTENANCE
+                        return false as we could not schedule the request to any of the elevators in the system.
  *
  */
 public class ElevatorController {
