@@ -33,6 +33,12 @@ import com.alds.design.elevator.model.ElevatorStatus;
                         -> When done servicing all below floors, reset the direction to NONE.
  *
  */
+
+/*
+ * Service layer responsible for floor requests pickup and consumption
+ * choosing which elevator will be processing request
+ * representing multi-elevator system
+ */
 public class ElevatorService {
 
 	private static final int MAX_ELEVATORS = 8;

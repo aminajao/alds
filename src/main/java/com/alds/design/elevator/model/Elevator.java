@@ -9,11 +9,17 @@ import java.util.concurrent.ConcurrentSkipListSet;
  */
 public class Elevator {
 
+	// unique id representing elevator
 	final int elevatorId;
+	// elevator current floor
 	int currentFloor;
+	// elevator status - IDLE/MOVING/REPAIR
 	ElevatorStatus status;
+	// elevator direction - UP/DOWN/NONE
 	ElevatorDirection direction;
+	// concurrent tree set representing all upwards floor requests
 	ConcurrentSkipListSet<Integer> upFloorRequests;
+	// concurrent tree set representing all downwards floor requests
 	ConcurrentSkipListSet<Integer> downFloorRequests;
 
 	public Elevator() {
@@ -37,36 +43,43 @@ public class Elevator {
 		});
 	}
 
-	public boolean updateStatus(ElevatorStatus elevatorStatus){
-		if(getTotalFloorRequests() > 0){
+	// update elevator status, if no floor requests available
+	public boolean updateStatus(ElevatorStatus elevatorStatus) {
+		if (getTotalFloorRequests() > 0) {
 			return false;
 		}
 		status = elevatorStatus;
 		return true;
 	}
 
-	public int getNextFloorDestination(){
-		if(direction == ElevatorDirection.DOWN){
+	// get next floor destination based on elevator direction
+	public int getNextFloorDestination() {
+		if (direction == ElevatorDirection.DOWN) {
 			return downFloorRequests.first();
-		}else if(direction == ElevatorDirection.UP){
+		} else if (direction == ElevatorDirection.UP) {
 			return upFloorRequests.first();
-		}else{
+		} else {
 			return 0;
 		}
 	}
+
+	// add new floor request based new floor with respect to current floor
 	public void addNewFloorRequest(int newFloor) {
 		if (newFloor > currentFloor) {
 			upFloorRequests.add(newFloor);
 		} else {
 			downFloorRequests.add(newFloor);
 		}
-		System.out.println("Added Request For Elevator : "+elevatorId+ " Up : "+upFloorRequests.size()+" Down : "+downFloorRequests.size());
+		System.out.println("Added Request For Elevator : " + elevatorId + " Up : " + upFloorRequests.size() + " Down : "
+				+ downFloorRequests.size());
 	}
 
+	// consume floor request added asynchronously and update elevator current floor
 	public boolean moveAndCheckIfServed() {
-		if (direction== ElevatorDirection.NONE) {
+		if (direction == ElevatorDirection.NONE) {
 			if (upFloorRequests.size() > 0 && downFloorRequests.size() > 0) {
-				if (Math.abs(currentFloor - upFloorRequests.first()) < Math.abs(currentFloor - downFloorRequests.first())) {
+				if (Math.abs(currentFloor - upFloorRequests.first()) < Math
+						.abs(currentFloor - downFloorRequests.first())) {
 					direction = ElevatorDirection.UP;
 				} else {
 					direction = ElevatorDirection.DOWN;
@@ -78,28 +91,28 @@ public class Elevator {
 			}
 		}
 
-		if(direction == ElevatorDirection.UP){
-			if(upFloorRequests.first() == currentFloor){
+		if (direction == ElevatorDirection.UP) {
+			if (upFloorRequests.first() == currentFloor) {
 				upFloorRequests.pollFirst();
-				if(upFloorRequests.size() == 0){
-		            direction = ElevatorDirection.NONE;
-		        }
+				if (upFloorRequests.size() == 0) {
+					direction = ElevatorDirection.NONE;
+				}
 				return true;
-			}else {
+			} else {
 				currentFloor++;
 			}
-		}else if(direction == ElevatorDirection.DOWN){
-			if(downFloorRequests.first() == currentFloor){
+		} else if (direction == ElevatorDirection.DOWN) {
+			if (downFloorRequests.first() == currentFloor) {
 				downFloorRequests.pollFirst();
-				if(downFloorRequests.size() == 0){
-		            direction = ElevatorDirection.NONE;
-		        }
+				if (downFloorRequests.size() == 0) {
+					direction = ElevatorDirection.NONE;
+				}
 				return true;
 			} else {
 				currentFloor--;
 			}
-		}else{
-			//Do Nothing. Elevator is not moving.
+		} else {
+			// Do Nothing. Elevator is not moving.
 		}
 		return false;
 	}
