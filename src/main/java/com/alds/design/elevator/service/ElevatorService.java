@@ -148,7 +148,6 @@ public class ElevatorService {
     	} finally {
     		lock.unlock();
     	}
-    	
     }
 
 	public Elevator[] getElevators() {

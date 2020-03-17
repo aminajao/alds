@@ -54,7 +54,6 @@ public class Elevator {
 			return 0;
 		}
 	}
-
 	public void addNewFloorRequest(int newFloor) {
 		if (newFloor > currentFloor) {
 			upFloorRequests.add(newFloor);
@@ -118,5 +117,4 @@ public class Elevator {
 	public int getTotalFloorRequests() {
 		return upFloorRequests.size() + downFloorRequests.size();
 	}
-
 }
