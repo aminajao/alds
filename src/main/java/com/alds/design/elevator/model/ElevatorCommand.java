@@ -6,44 +6,37 @@ import java.util.Objects;
  * @author rohsingh
  *
  */
-public class ElevatorCommand {
-	
+public class ElevatorCommand implements Comparable<ElevatorCommand> {
+	 
 	private int userId;
-	private int level;
-	private ElevatorDirection direction;
-	private int elevatorId;
+	private int targetFloor;
+	private ElevatorDirection targetDirection;
 	
 	public ElevatorCommand(int level) {
-		super();
-		this.level = level;
+		this.targetFloor = level;
 	}
 	
 	public ElevatorCommand(UserAction action) {
 		this.userId = action.getUserId();
-		this.level = action.getLevel();
-		this.direction = action.getDirection();
-		this.elevatorId = action.getElevatorId();
+		this.targetFloor = action.getLevel();
+		this.targetDirection = action.getDirection();
 	}
 
 	public int getUserId() {
 		return userId;
 	}
 
-	public int getLevel() {
-		return level;
+	public int getTargetFloor() {
+		return targetFloor;
 	}
 
 	public ElevatorDirection getDirection() {
-		return direction;
-	}
-
-	public int getElevatorId() {
-		return elevatorId;
+		return targetDirection;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(level, userId);
+		return Objects.hash(targetFloor, userId);
 	}
 
 	@Override
@@ -53,7 +46,12 @@ public class ElevatorCommand {
 		if (!(obj instanceof ElevatorCommand))
 			return false;
 		ElevatorCommand other = (ElevatorCommand) obj;
-		return level == other.level && userId == other.userId;
+		return targetFloor == other.targetFloor && userId == other.userId;
+	}
+
+	@Override
+	public int compareTo(ElevatorCommand o) {
+		return Integer.compare(this.targetFloor, o.targetFloor);
 	}
 
 }

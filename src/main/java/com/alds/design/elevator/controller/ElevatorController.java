@@ -1,8 +1,10 @@
 package com.alds.design.elevator.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.alds.design.elevator.model.Elevator;
 import com.alds.design.elevator.model.ElevatorStatus;
-import com.alds.design.elevator.processor.ElevatorCommandProcessor;
-import com.alds.design.elevator.processor.ElevatorThread;
 
 /**
  * @author rohsingh
@@ -10,26 +12,30 @@ import com.alds.design.elevator.processor.ElevatorThread;
  */
 public class ElevatorController {
 
-	private static final int DEAFULT_NUMBER_OF_ELEVATOR = 1;
+	private static final int MAX_ELEVATORS = 8;
 
-	ElevatorCommandProcessor elevatorCommandProcessor;
+	final List<ElevatorRunner> elevators;
 	
-	int elevatorsToInit;
-
-	public ElevatorController(ElevatorCommandProcessor elevatorCommandProcessor, int elevatorsToInit) {
-		this.elevatorCommandProcessor = elevatorCommandProcessor;
-		this.elevatorsToInit = elevatorsToInit;
-	}
+	final int elevatorCount;
 	
-	public ElevatorController(ElevatorCommandProcessor elevatorCommandProcessor) {
-		this(elevatorCommandProcessor, DEAFULT_NUMBER_OF_ELEVATOR);
-	}
-
-	public void start() {
+	public ElevatorController(int elevatorCount) {
 		System.out.println("Elevator System starting..");
-		ElevatorThread elevT = new ElevatorThread(1, ElevatorStatus.IDLE);
-		elevatorCommandProcessor.getElevators().add(elevT);			
-		elevatorCommandProcessor.getElevators().forEach(Thread::start);
+		this.elevatorCount = elevatorCount < MAX_ELEVATORS ? elevatorCount : MAX_ELEVATORS;
+		this.elevators = new ArrayList<>();
+		for(int elevator = 1; elevator <= elevatorCount; elevator++){
+            Elevator e = new Elevator(elevator, ElevatorStatus.IDLE);
+            ElevatorRunner runner = new ElevatorRunner(e);
+            System.out.println("Started Elevator "+e.getElevatorId());
+            runner.start();
+        }
 		System.out.println("Elevator System started..");
+	}
+
+	public List<ElevatorRunner> getElevators() {
+		return elevators;
+	}
+
+	public int getElevatorCount() {
+		return elevatorCount;
 	}
 }
