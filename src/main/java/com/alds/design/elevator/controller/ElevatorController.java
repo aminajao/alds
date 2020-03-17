@@ -1,16 +1,15 @@
 package com.alds.design.elevator.controller;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import com.alds.design.elevator.model.Elevator;
-import com.alds.design.elevator.model.ElevatorStatus;
+import com.alds.design.elevator.service.ElevatorService;
 
 /**
  * @author rohsingh
  * 
  * 
- 	Elevator Scheduling Algorithm:
+ *         
+ *  Scheduling Algorithm:
     ---------------------------
     -> Upper bound of active requests per elevator (Average per elevator) = activeRequests/elevatorCount + 1
     -> Do not assign the request to an elevator if it is under MAINTENANCE or is already serving more than average number of active requests in the system.
@@ -23,34 +22,32 @@ import com.alds.design.elevator.model.ElevatorStatus;
                         return true
         -> Case III -   No elevators were found eligible to serve the request. Can happen if all the elevators are under MAINTENANCE
                         return false as we could not schedule the request to any of the elevators in the system.
- *
  */
 public class ElevatorController {
 
-	private static final int MAX_ELEVATORS = 8;
+	ElevatorService elevatorService;
 
-	final List<ElevatorRunner> elevators;
-	
-	final int elevatorCount;
-	
-	public ElevatorController(int elevatorCount) {
+	public ElevatorController(ElevatorService elevatorService) {
+		this.elevatorService = elevatorService;
+		boot();
+	}
+
+	private void boot() {
 		System.out.println("Elevator System starting..");
-		this.elevatorCount = elevatorCount < MAX_ELEVATORS ? elevatorCount : MAX_ELEVATORS;
-		this.elevators = new ArrayList<>();
-		for(int elevator = 1; elevator <= elevatorCount; elevator++){
-            Elevator e = new Elevator(elevator, ElevatorStatus.IDLE);
-            ElevatorRunner runner = new ElevatorRunner(e);
-            System.out.println("Started Elevator "+e.getElevatorId());
-            runner.start();
-        }
+		int elevatorCount = elevatorService.getElevatorCount();
+		Elevator[] elevators = elevatorService.getElevators();
+		for (int elevator = 0; elevator < elevatorCount; elevator++) {
+			elevators[elevator] = new Elevator(elevator, 0);
+			System.out.println("Started Elevator " + elevators[elevator].getElevatorId());
+		}
 		System.out.println("Elevator System started..");
 	}
-
-	public List<ElevatorRunner> getElevators() {
-		return elevators;
+	
+	public void sendFloorRequest(int request) throws InterruptedException {
+		elevatorService.pickUpRequest(request);
 	}
-
-	public int getElevatorCount() {
-		return elevatorCount;
+	
+	public void consumeFloorRequest() throws InterruptedException {
+		elevatorService.moveElevator();
 	}
 }
